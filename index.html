@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dynamic Slot Assistant</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <h2>🎰 Dynamic Slot Assistant</h2>
+
+  <div class="setup">
+    <!-- UPDATED: Dropdown for Game Name -->
+    <select id="game">
+      <option value="Super Ace">Super Ace</option>
+      <option value="Super Ace Deluxe">Super Ace Deluxe</option>
+      <option value="Wild Bounty">Wild Bounty</option>
+      <option value="Wild Ape">Wild Ape</option>
+      <option value="Pinata Wins">Pinata Wins</option>
+      <option value="Wild Bandito">Wild Bandito</option>
+      <option value="Treasures of Aztec">Treasures of Aztec</option>
+      <option value="Lucky Necko">Lucky Necko</option>
+      <option value="Asgardian Rising">Asgardian Rising</option>
+      <option value="Zombie Outbreak">Zombie Outbreak</option>
+    </select>
+
+    <input id="balanceInput" type="number" placeholder="Starting Balance">
+    <input id="targetProfit" type="number" placeholder="Target Profit">
+    <input id="maxLoss" type="number" placeholder="Max Loss">
+    <input id="baseBet" type="number" placeholder="Base Bet">
+    <button onclick="startSession()">Start Session</button>
+  </div>
+
+  <hr>
+
+  <div class="status-panel">
+    <p id="currentBalance">Balance: 0</p>
+    <p id="profitLoss">Profit/Loss: 0</p>
+    <p id="spinCount">Total Spins: 0</p>
+    <p id="nextBet">Next Bet: 0</p>
+    <p id="status">Status: Waiting</p>
+  </div>
+
+  <hr>
+
+  <div class="spin-input">
+    <input id="betAmount" type="number" placeholder="Bet Amount">
+    <input id="resultAmount" type="number" placeholder="Result (0=loss)">
+    <label>
+      <input type="checkbox" id="freeSpin"> Free Spin
+    </label>
+    <button onclick="submitSpin()">Submit Spin</button>
+  </div>
+
+  <hr>
+
+  <!-- NEW: Spin Summary -->
+  <div class="summary-panel">
+    <h3>Spin Summary</h3>
+    <p id="summary">Total Spins: 0 | Hits: 0 | Misses: 0 | Hit Rate: 0%</p>
+  </div>
+
+  <div class="history">
+    <h3>Spin History</h3>
+    <table id="historyTable">
+      <tr>
+        <th>#</th><th>Bet</th><th>Result</th><th>Free Spin</th><th>Balance</th>
+      </tr>
+    </table>
+  </div>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>
