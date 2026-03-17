@@ -40,6 +40,12 @@ let totalFreeSpins = 0;
 // NEW: STEP LEVEL BASED SA 10 LOSE
 let loseStepLevel = 0;
 
+// ✅ NEW FOR PATTERN
+let betIndex = 0;
+let stepUpCount = 0;     // max 2 lang
+let inLock = false;      // after hit
+let missAfterHit = 0;
+
 function startSession() {
   const gameName = document.getElementById("game").value;
   availableBets = gameBets[gameName] || [baseBet];
@@ -51,7 +57,10 @@ function startSession() {
   targetProfit = Number(document.getElementById("targetProfit").value);
   maxLoss = Number(document.getElementById("maxLoss").value);
   baseBet = Number(document.getElementById("baseBet").value);
+
   nextBet = getClosestBet(baseBet);
+  betIndex = availableBets.indexOf(nextBet);
+
   spinCounter = 0;
   loseStreak = 0;
   loseStepLevel = 0;
@@ -63,6 +72,10 @@ function startSession() {
   totalHits = 0;
   totalMisses = 0;
   totalFreeSpins = 0;
+
+  stepUpCount = 0;
+  inLock = false;
+  missAfterHit = 0;
 
   document.getElementById("status").innerText = "Status: Running...";
   updateUI();
@@ -96,18 +109,24 @@ function submitSpin() {
       loseStepLevel++;
     }
 
+    if (inLock) {
+      missAfterHit++;
+    }
+
   } else {
     loseStreak = 0;
     loseStepLevel = 0;
     totalHits++;
+
+    inLock = true;
+    missAfterHit = 0;
   }
 
-  // ✅ COUNT FREE SPIN
   if (freeSpin) {
     totalFreeSpins++;
   }
 
-  decideNextBet(freeSpin);
+  decideNextBet(freeSpin, result > 0);
   checkStop();
   updateUI();
   addHistory(bet, result, freeSpin);
@@ -131,48 +150,44 @@ function getClosestBet(target) {
   return closest;
 }
 
-function decideNextBet(freeSpin) {
-  let targetBet = baseBet;
+function decideNextBet(freeSpin, isHit) {
 
-  let profit = balance - startingBalance;
-  let peakProfit = peakBalance - startingBalance;
+  const baseIndex = availableBets.indexOf(getClosestBet(baseBet));
 
-  if (profit >= 50) {
-    isAggressive = true;
+  if (isHit) {
+    // stay lang
+  } else {
+
+    if (inLock) {
+      // after hit logic
+      if (missAfterHit >= 2) {
+        betIndex = baseIndex;
+        stepUpCount = 0;
+        inLock = false;
+        missAfterHit = 0;
+      }
+    } else {
+      // progression (max 2 steps)
+      if (stepUpCount < 2) {
+        betIndex++;
+        stepUpCount++;
+      } else {
+        // 3rd miss → reset
+        betIndex = baseIndex;
+        stepUpCount = 0;
+      }
+    }
   }
 
-  if (isAggressive && profit <= peakProfit * 0.5) {
-    isAggressive = false;
+  if (betIndex >= availableBets.length) {
+    betIndex = availableBets.length - 1;
   }
 
-  if (balance <= startingBalance) {
-    isAggressive = false;
+  if (betIndex < 0) {
+    betIndex = 0;
   }
 
-  if (loseStepLevel > 0) {
-    targetBet = baseBet * (1 + loseStepLevel);
-  }
-  else if (balance <= startingBalance) {
-    targetBet = baseBet;
-  } 
-  else if (freeSpin && balance > startingBalance) {
-    targetBet = baseBet;
-  } 
-  else if (isAggressive) {
-    targetBet = Math.max(baseBet * 2, nextBet * 1.5);
-  } 
-  else {
-    targetBet = baseBet;
-  }
-
-  if (balance <= startingBalance - maxLoss + baseBet) {
-    targetBet = baseBet;
-  }
-  if (balance >= startingBalance + targetProfit - baseBet) {
-    targetBet = baseBet;
-  }
-
-  nextBet = getClosestBet(targetBet);
+  nextBet = availableBets[betIndex];
 }
 
 function checkStop() {
