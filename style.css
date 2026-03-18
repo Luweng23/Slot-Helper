@@ -1,41 +1,42 @@
 body {
+  margin: 0;
+  background: rgba(0,0,0,0);
+  font-family: Arial, sans-serif;
+}
+
+/* TOP BAR */
+.window-bar {
+  background: #00c853;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.window-bar button {
+  background: red;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* MAIN */
+.container {
   background: #111;
   color: #fff;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  margin: 0;
-  padding: 0;
+  padding: 10px;
 }
 
-.container {
-  padding: 20px;
-}
-
-input, button {
-  width: 90%;
-  padding: 12px;
+input, button, select {
+  width: 95%;
+  padding: 10px;
   margin: 5px;
-  font-size: 16px;
 }
 
 button {
   background: #00c853;
   color: white;
   border: none;
-  cursor: pointer;
-}
-
-button:active {
-  background: #009624;
-}
-
-hr {
-  margin: 15px 0;
-}
-
-.status-panel p {
-  font-size: 18px;
-  margin: 5px 0;
 }
 
 .history table {
