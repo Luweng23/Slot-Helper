@@ -5,11 +5,15 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-  <h2>🎰 Dynamic Slot Assistant</h2>
 
+<!-- WINDOW CONTROLS -->
+<div class="window-bar">
+  <span>🎰 Slot Assistant</span>
+  <button onclick="closeApp()">X</button>
+</div>
+
+<div class="container">
   <div class="setup">
-    <!-- UPDATED: Dropdown for Game Name -->
     <select id="game">
       <option value="Super Ace">Super Ace</option>
       <option value="Super Ace Deluxe">Super Ace Deluxe</option>
@@ -53,7 +57,6 @@
 
   <hr>
 
-  <!-- Spin Summary -->
   <div class="summary-panel">
     <h3>Spin Summary</h3>
     <p id="summary">Total Spins: 0 | Hits: 0 | Misses: 0 | Hit Rate: 0%</p>
@@ -70,7 +73,6 @@
 
   <hr>
 
-  <!-- ✅ NEW: GAME HISTORY -->
   <div class="game-history">
     <h3>Game History</h3>
     <table id="gameHistoryTable">
@@ -84,6 +86,13 @@
   </div>
 
 </div>
+
+<script>
+function closeApp(){
+  window.close();
+}
+</script>
+
 <script src="script.js"></script>
 </body>
 </html>
