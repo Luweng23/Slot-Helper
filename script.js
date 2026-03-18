@@ -12,6 +12,31 @@ const gameBets = {
   "Zombie Outbreak": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 500, 800, 1000, 2500, 5000],
 };
 
+// ===== DRAG FLOATING WINDOW =====
+const dragElement = document.getElementById("floatingWindow");
+const dragBar = document.querySelector(".drag-bar");
+
+let offsetX = 0, offsetY = 0, isDragging = false;
+
+dragBar.addEventListener("mousedown", (e) => {
+  isDragging = true;
+  offsetX = e.clientX - dragElement.offsetLeft;
+  offsetY = e.clientY - dragElement.offsetTop;
+});
+
+document.addEventListener("mousemove", (e) => {
+  if (isDragging) {
+    dragElement.style.left = (e.clientX - offsetX) + "px";
+    dragElement.style.top = (e.clientY - offsetY) + "px";
+  }
+});
+
+document.addEventListener("mouseup", () => {
+  isDragging = false;
+});
+
+// ===== ORIGINAL CODE BELOW (UNCHANGED) =====
+
 let startingBalance = 0;
 let balance = 0;
 let targetProfit = 0;
